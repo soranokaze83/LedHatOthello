@@ -1,0 +1,3 @@
+＃LedHatOthello
+＃ラズベリーパイとユニコーンHATを組み合わせてLEDの表示でオセロを動作させるプログラム
+#Python
