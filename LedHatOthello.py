@@ -263,7 +263,7 @@ try:
                                     unicorn.set_pixel(x + check_x,y + check_y, set_anime_colorR,set_anime_colorG,set_anime_colorB)
                                     unicorn.show()
                                     time.sleep(0.1)
-                                time.sleep(0.3)
+                                time.sleep(0.2)
                             
     
                             # 設定値を置き換える
@@ -287,15 +287,8 @@ try:
             break
 
         # 最大値超え→最小値　最小値未満→最大値変換
-        if x == width:
-            x = 0
-        if x == -1:
-            x = width-1
-
-        if y == height:
-            y = 0
-        if y == -1:
-            y = height-1
+        x = my_util.check_map_minmax( x, 0, width )
+        y = my_util.check_map_minmax( y, 0, height )
 
         # 配列設定値に応じてLEDの表示変更
         for y_count in range(height):

@@ -13,5 +13,12 @@ def check_map_point( x, y ):
 	# エラー条件以外の場合、正常終了
     return 0
 
+def check_map_minmax( data_size, size_min, size_max ):
+    if data_size == size_max:
+        return size_min
+    if data_size == size_min -1:
+        return size_max -1
+    return data_size
+
 if(__name__ == '__main__'):
     print('my_util.py: loaded as script file')
