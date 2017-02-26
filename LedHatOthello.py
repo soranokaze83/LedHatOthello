@@ -169,15 +169,6 @@ try:
                         cursor_point_y = cursor_map_y[cursor_y_count][cursor_x_count]
                         if my_util.check_map_point(x + cursor_point_x,y + cursor_point_y) == -1:
                         	continue
-#                        if (x + cursor_point_x) == -1:
-#                            continue
-#                        if (x + cursor_point_x) == width:
-#                            continue
-#                        if (y + cursor_point_y) == -1:
-#                            continue
-#                        if (y + cursor_point_y) == height:
-#                            continue
-#                        print("x=" + str(x + cursor_point_x) + " y=" + str(y + cursor_point_y))
 
                         sys.stdout.write(str(data_map[y + cursor_point_y][x + cursor_point_x]))
                         # カーソルの周りに自身と同じ色のコマを見つけた場合
@@ -206,14 +197,6 @@ try:
                                 # フィールドの外に出る場合は、対象なしで終了
                                 if my_util.check_map_point(x + check_x, y + check_y) == -1:
 		                        	break
-#                                if (x + check_x) == -1:
-#                                    break
-#                                if (x + check_x) == width:
-#                                    break
-#                                if (y + check_y) == -1:
-#                                    break
-#                                if (y + check_y) == height:
-#                                    break
                                 # 終端のマスが空の場合、対象なしで終了
                                 if data_map[y + check_y][x + check_x] == 0:
                                     break
