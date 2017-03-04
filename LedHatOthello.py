@@ -75,29 +75,6 @@ data_map[4][3] = 2
 data_map[4][4] = 1
 print(data_map)
 
-# カーソルマップ作成
-cursor_map_x = [[0 for cursor_y_count in range(3)] for cursor_x_count in range(3)]
-cursor_map_x[0][0] = -1
-cursor_map_x[0][1] = 0
-cursor_map_x[0][2] = +1
-cursor_map_x[1][0] = -1
-cursor_map_x[1][1] = 0
-cursor_map_x[1][2] = +1
-cursor_map_x[2][0] = -1
-cursor_map_x[2][1] = 0
-cursor_map_x[2][2] = +1
-cursor_map_y = [[0 for cursor_y_count in range(3)] for cursor_x_count in range(3)]
-cursor_map_y[0][0] = -1
-cursor_map_y[0][1] = -1
-cursor_map_y[0][2] = -1
-cursor_map_y[1][0] = 0
-cursor_map_y[1][1] = 0
-cursor_map_y[1][2] = 0
-cursor_map_y[2][0] = +1
-cursor_map_y[2][1] = +1
-cursor_map_y[2][2] = +1
-print("cursor_map_x = " + str(cursor_map_x))
-print("cursor_map_y = " + str(cursor_map_y))
 
 # 配列設定値に応じてLEDの表示変更
 for y_count in range(height):
@@ -134,7 +111,26 @@ try:
     	# 配置不可ならスキップ、配置可能なら取れるコマを得点として記録する。
     	# 最終的に得点が一番多いマスにコマを置く。
     	# 最初は、記録するのが面倒なので得点が多いところで更新(マスだけ覚える)で良いかも。
-    	
+		
+        # 位置情報が更新完了時点でLEDを点灯する。
+        print("x:" + str(x) + " y:" + str(y))
+        if data_map[y][x] == 0:
+            if myNumber == 1:
+                unicorn.set_pixel(x,y,colorR_1,colorG_1,colorB_1)
+            if myNumber == 2:
+                unicorn.set_pixel(x,y,colorR_2,colorG_2,colorB_2)
+        if data_map[y][x] == 1:
+            if myNumber == 1:
+                unicorn.set_pixel(x,y,int(colorR_1*0.7), int(colorG_1*0.7), int(colorB_1*0.7))
+            else:
+                unicorn.set_pixel(x, y, myCursorColorR_1, myCursorColorG_1, myCursorColorB_1)
+        if data_map[y][x] == 2:
+            if myNumber == 2:
+                unicorn.set_pixel(x,y,int(colorR_2*0.7), int(colorG_2*0.7), int(colorB_2*0.7))
+            else:
+                unicorn.set_pixel(x, y, myCursorColorR_2, myCursorColorG_2, myCursorColorB_2)
+        unicorn.show()
+
         # キーボードから入力を受ける。
         # lfalgsが書き換えられているので、エンターを押さなくても次に進む。echoもしない
         ch = sys.stdin.read(1)
@@ -172,8 +168,10 @@ try:
                 for cursor_y_count in range(3):
                     for cursor_x_count in range(3):
                         # フィールドの外に出る場合は、スキップする
-                        cursor_point_x = cursor_map_x[cursor_y_count][cursor_x_count]
-                        cursor_point_y = cursor_map_y[cursor_y_count][cursor_x_count]
+                        #cursor_point_x = cursor_map_x[cursor_y_count][cursor_x_count]
+                        #cursor_point_y = cursor_map_y[cursor_y_count][cursor_x_count]
+                        cursor_point_x = my_util.check_cursor_x_point( cursor_x_count, cursor_y_count )
+                        cursor_point_y = my_util.check_cursor_y_point( cursor_x_count, cursor_y_count )
                         if my_util.check_map_point(x + cursor_point_x,y + cursor_point_y) == -1:
                         	continue
 
@@ -200,7 +198,7 @@ try:
                                 # サイズセット
                                 check_x = cursor_point_x * data_check_count
                                 check_y = cursor_point_y * data_check_count
-                                print("check_x=" + str(x + check_x) +" check_y=" + str(y + check_y))
+                                #print("check_x=" + str(x + check_x) +" check_y=" + str(y + check_y))
                                 # フィールドの外に出る場合は、対象なしで終了
                                 if my_util.check_map_point(x + check_x, y + check_y) == -1:
 		                        	break
@@ -271,6 +269,68 @@ try:
                     else:
                         myNumber = 1
 
+                    if my_util.check_map_data(data_map, myNumber, x, y) == 0:
+	                    # passする
+	                    unicorn.set_pixel(0, 0, 90,150,80)
+	                    unicorn.set_pixel(0, 1, 90,150,80)
+	                    unicorn.set_pixel(0, 2, 90,150,80)
+	                    unicorn.set_pixel(0, 3, 90,150,80)
+	                    unicorn.set_pixel(1, 0, 90,150,80)
+	                    unicorn.set_pixel(1, 2, 90,150,80)
+	                    unicorn.set_pixel(2, 0, 90,150,80)
+	                    unicorn.set_pixel(2, 1, 90,150,80)
+	                    unicorn.set_pixel(2, 2, 90,150,80)
+	                    unicorn.show()
+	                    time.sleep(0.5)
+	                    unicorn.set_pixel(4, 0, 90,150,80)
+	                    unicorn.set_pixel(4, 1, 90,150,80)
+	                    unicorn.set_pixel(4, 2, 90,150,80)
+	                    unicorn.set_pixel(4, 3, 90,150,80)
+	                    unicorn.set_pixel(5, 0, 90,150,80)
+	                    unicorn.set_pixel(5, 2, 90,150,80)
+	                    unicorn.set_pixel(6, 0, 90,150,80)
+	                    unicorn.set_pixel(6, 1, 90,150,80)
+	                    unicorn.set_pixel(6, 2, 90,150,80)
+	                    unicorn.set_pixel(6, 3, 90,150,80)
+	                    unicorn.show()
+	                    time.sleep(0.5)
+	                    unicorn.set_pixel(1, 4, 90,150,80)
+	                    unicorn.set_pixel(1, 5, 90,150,80)
+	                    unicorn.set_pixel(1, 7, 90,150,80)
+	                    unicorn.set_pixel(2, 4, 90,150,80)
+	                    unicorn.set_pixel(2, 5, 90,150,80)
+	                    unicorn.set_pixel(2, 7, 90,150,80)
+	                    unicorn.set_pixel(3, 4, 90,150,80)
+	                    unicorn.set_pixel(3, 6, 90,150,80)
+	                    unicorn.set_pixel(3, 7, 90,150,80)
+	                    unicorn.show()
+	                    time.sleep(0.5)
+	                    unicorn.set_pixel(5, 4, 90,150,80)
+	                    unicorn.set_pixel(5, 5, 90,150,80)
+	                    unicorn.set_pixel(5, 7, 90,150,80)
+	                    unicorn.set_pixel(6, 4, 90,150,80)
+	                    unicorn.set_pixel(6, 5, 90,150,80)
+	                    unicorn.set_pixel(6, 7, 90,150,80)
+	                    unicorn.set_pixel(7, 4, 90,150,80)
+	                    unicorn.set_pixel(7, 6, 90,150,80)
+	                    unicorn.set_pixel(7, 7, 90,150,80)
+	                    print("pass")
+	                    unicorn.show()
+	                    time.sleep(0.5)
+
+	                    # コマの色を変更
+	                    if myNumber == 1:
+	                        myNumber = 2
+	                    else:
+	                        myNumber = 1
+
+	                    #if my_util.check_map_data(data_map, myNumber) == 0:
+	                    	# 両方とも置けなくなったので終了する。（処理を作成する）
+	                    #	print("end")
+
+                    time.sleep(0.2)
+
+
         # 強制終了キー押下時の処理
         if ch =='0':
             print('?')
@@ -283,30 +343,14 @@ try:
         # 配列設定値に応じてLEDの表示変更
         for y_count in range(height):
             for x_count in range(width):
+                if data_map[y_count][x_count] == 0:
+                    unicorn.set_pixel(x_count, y_count, 0, 0, 0)
                 if data_map[y_count][x_count] == 1:
                     unicorn.set_pixel(x_count, y_count, int(colorR_1*0.4), int(colorG_1*0.4), int(colorB_1*0.4))
                 if data_map[y_count][x_count] == 2:
                     unicorn.set_pixel(x_count, y_count, int(colorR_2*0.4), int(colorG_2*0.4), int(colorB_2*0.4))
         unicorn.show()
 
-        # 位置情報が更新完了時点でLEDを点灯する。
-        print("x:" + str(x) + " y:" + str(y))
-        if data_map[y][x] == 0:
-            if myNumber == 1:
-                unicorn.set_pixel(x,y,colorR_1,colorG_1,colorB_1)
-            if myNumber == 2:
-                unicorn.set_pixel(x,y,colorR_2,colorG_2,colorB_2)
-        if data_map[y][x] == 1:
-            if myNumber == 1:
-                unicorn.set_pixel(x,y,int(colorR_1*0.7), int(colorG_1*0.7), int(colorB_1*0.7))
-            else:
-                unicorn.set_pixel(x, y, myCursorColorR_1, myCursorColorG_1, myCursorColorB_1)
-        if data_map[y][x] == 2:
-            if myNumber == 2:
-                unicorn.set_pixel(x,y,int(colorR_2*0.7), int(colorG_2*0.7), int(colorB_2*0.7))
-            else:
-                unicorn.set_pixel(x, y, myCursorColorR_2, myCursorColorG_2, myCursorColorB_2)
-        unicorn.show()
 
 finally:
     # fdの属性を元に戻す
