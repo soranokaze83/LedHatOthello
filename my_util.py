@@ -1,5 +1,7 @@
 # coding: UTF-8
 import unicornhat as unicorn
+import random
+import time
 
 # global変数宣言
 # カーソルマップ作成
@@ -24,6 +26,18 @@ cursor_map_y[2][0] = +1
 cursor_map_y[2][1] = +1
 cursor_map_y[2][2] = +1
 
+# マップ位置に対する得点を設定する
+map_data_score = [
+[9,0,7,7,7,7,0,9],
+[0,0,2,2,2,2,0,0],
+[7,2,6,5,5,6,2,7],
+[7,2,5,0,0,5,2,7],
+[7,2,5,0,0,5,2,7],
+[7,2,6,5,5,6,2,7],
+[0,0,2,2,2,2,0,0],
+[9,0,7,7,7,7,0,9]
+]
+print(map_data_score)
 
 def check_map_point( x, y ):
 #    print("x=" + str(x) + " y=" + str(y))
@@ -82,7 +96,6 @@ def check_map_data( data_map, myNumber, x_point, y_point ):
                     if check_map_point(x + cursor_point_x,y + cursor_point_y) == -1:
                     	continue
 
-
                     if data_map[y + cursor_point_y][x + cursor_point_x] == myNumber:
                         # 何もしない。
                         pass
@@ -135,29 +148,49 @@ def check_map_data( data_map, myNumber, x_point, y_point ):
                                 unicorn.set_pixel(x, y, 255,150,80)
                                 # はさんだ対象コマの色も変更する
                                 # unicorn.set_pixel(x + cursor_point_x * data_check_count, y + cursor_point_y * data_check_count, set_anime_colorR,set_anime_colorG,set_anime_colorB)
+                                # 黄色色変え
+
                                 unicorn.show()
+                                time.sleep(0.1)
                             else:
                                 pass
                                 #return 0
             if mycolor_change_flag != 0:
                 if color_change_count != 0:
                     print(color_change_count)
+                    # ひっくり返せるコマにマスに対するスコアを加算する
+                    color_change_count = color_change_count + map_data_score[y][x]
+                    print(color_change_count)
+                    # 最大カウントを超えるかチェック。
                     if color_change_count > max_color_change_count:
                         # 最大カウントを超えた場合は、最大値を記録し、x、yを更新する。
                         max_color_change_count = color_change_count
                         print("x = " + str(x) + " y = " + str(y))
                         x_big_point = x
                         y_big_point = y
+                    # 最大カウントと同じ場合。
+                    if color_change_count == max_color_change_count:
+                        # 最大と同じ値の場合は、置き換えるを実施するかをランダムで決める。
+                        if random.randint(0,1) == 1:
+                            print("random!")
+                            # 最大カウントを超えた場合は、最大値を記録し、x、yを更新する。
+                            max_color_change_count = color_change_count
+                            print("x = " + str(x) + " y = " + str(y))
+                            x_big_point = x
+                            y_big_point = y
+                        else:
+                            print("not random!!")
 
     # コマ置きが有効な場合、コマが一番ひっくり返せる位置にコマを置く。
-#    if mycolor_change_flag != 0:
-#        data_map[y_big_point][x_big_point] = myNumber
-#        x_point = x_big_point
-#        y_point = y_big_point
+    if mycolor_change_flag != 0:
+        #data_map[y_big_point][x_big_point] = myNumber
+        x_point = x_big_point
+        y_point = y_big_point
+        print("x_point = " + str(x_point) + " y_point = " + str(y_point))
 
     # コマの色変えフラグを戻り値に設定
     print(mycolor_change_flag)
-    return mycolor_change_flag
+    return mycolor_change_flag, x_point, y_point
 
 
 

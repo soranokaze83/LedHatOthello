@@ -1,7 +1,6 @@
 # coding: UTF-8
 
 import time
-import random
 
 import unicornhat as unicorn
 import sys
@@ -130,10 +129,14 @@ try:
             else:
                 unicorn.set_pixel(x, y, myCursorColorR_2, myCursorColorG_2, myCursorColorB_2)
         unicorn.show()
-
-        # キーボードから入力を受ける。
-        # lfalgsが書き換えられているので、エンターを押さなくても次に進む。echoもしない
-        ch = sys.stdin.read(1)
+        
+        if myNumber == 1:        	
+   	        # キーボードから入力を受ける。
+	        # lfalgsが書き換えられているので、エンターを押さなくても次に進む。echoもしない
+	        ch = sys.stdin.read(1)
+        else:
+	    	# キーボードからではなく自動設定
+	    	ch = '5'
 
         # キーボードから入力受付完了のタイミングで現在のLEDを消灯する。
         unicorn.set_pixel(x , y, 0, 0, 0)
@@ -269,7 +272,9 @@ try:
                     else:
                         myNumber = 1
 
-                    if my_util.check_map_data(data_map, myNumber, x, y) == 0:
+                    #if my_util.check_map_data(data_map, myNumber, x, y) == 0:
+                    ret_map_data, x, y = my_util.check_map_data(data_map, myNumber, x, y)
+                    if  ret_map_data == 0:
 	                    # passする
 	                    unicorn.set_pixel(0, 0, 90,150,80)
 	                    unicorn.set_pixel(0, 1, 90,150,80)
